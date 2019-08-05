@@ -7,8 +7,10 @@ root = tree.getroot()
 
 
 # price - raise the main price and insert new tier
+
 for elem in tree.iterfind('way'):
-    for subelem in tree.iterfind('tag'):
+    #print(elem.attrib)
+    for subelem in elem.iterfind('tag'):
         print(subelem.attrib)
     print("_________________________________________________________")
 #     for elem in root:

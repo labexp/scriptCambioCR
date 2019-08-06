@@ -1,26 +1,72 @@
 import xml.etree.cElementTree as ET
 from xml.etree.ElementTree import Element, SubElement
 
-tree = ET.ElementTree(file='alajuelacalles.osm')
-
-root = tree.getroot()
 
 
-# price - raise the main price and insert new tier
+def obtener_nombres():
+    tree = ET.ElementTree(file='alajuelacalles.osm')
 
-for elem in tree.iterfind('way'):
-    #print(elem.attrib)
-    for subelem in elem.iterfind('tag'):
-        print(subelem.attrib)
-    print("_________________________________________________________")
-#     for elem in root:
-#         for subelem in elem:
-#        print(subelem.attrib)
-    #price = elem.text
-    #newprice = (float(price.replace(",", ".")))*1.2
+    root = tree.getroot()
 
-    #newtier = "NEW TIER"
-    #SubElement(root[0][pos][5], newtier)
-    #pos+=1
 
-#tree.write('pricelist.xml', "UTF-8")
+    # price - raise the main price and insert new tier
+
+    for elem in tree.iterfind('way'):
+        bandera_Altname=0
+        bandera_name=0
+        for subelem in elem.iterfind('tag'):
+
+
+            if(subelem.attrib['k'] == "name"):
+                nombre_completo = subelem.attrib['v']
+                etiqueta_nombre=subelem.attrib['v'].split(' ')
+                if verificar_etiqueta(etiqueta_nombre[0])== 1 :  #primera palabra
+                    if verificar_numero(etiqueta_nombre[1][0])==1: #primer letra de la segunda palabra
+                            bandera_name=1
+            if(subelem.attrib['k'] == "alt_name"):
+                altname_completo=subelem.attrib['v']
+                bandera_Altname=1
+
+        if(bandera_Altname==1 and bandera_name==1):
+            for subelem in elem.iterfind('tag'):
+                if(subelem.attrib['k'] == "name"):
+                    subelem.attrib['v']=altname_completo
+                if(subelem.attrib['k']== "alt_name"):
+                    subelem.attrib['v']=nombre_completo
+    tree.write('file_new.xml')
+
+
+
+
+def verificar_etiqueta(etiqueta):
+    lista = ['Paseo','Río', 'Avenida', 'Hacienda', 'Puerto', 'Callejón', 'Calle', 'Calzada', 'Camino', 'Av.','Paso', 'Cañada', 'Minas', 'Cerrada',
+    'Puebla', 'Principal', 'Central','Primera', 'Segunda', 'Portón', 'Lateral', 'Calz.', 'Corrido', 'Casa', 'Villa', 'Mejía',
+    'Vía', 'Via', 'Real', 'Isla', 'Avendida', 'Marisma', 'Rada', 'Raudal', 'Ribera', 'Embocadura', 'Cataratas', 'Médanos',
+    'Mirador', 'Av', 'Jardín',  'A.', 'Circuito','Gral.', 'Rincón', 'Calz', 'Rinconada', 'Periférico', 'Cda', 'Jardin',
+    'C.', 'Callejon', 'Colegio', 'Valle', 'avenida', 'camino', 'calle', 'Calle', 'Rotonda', 'Parqueo', 'Parque', 'entrada',
+    'Entrada', 'sendero', 'Sendero', 'Pasaje', 'pasaje', 'Puerto', 'Ciudad', 'Puente', 'Boulevard', 'Agrosuperior', 'Bodegas',
+    'Autobanco', 'SkyTrace', 'Plaza', 'Motel', 'C/', 'Rotonda', 'Drive', 'Residencial', 'Automac',
+    'Auto', 'Transcersal', 'Inter', 'Pasillo', 'Centro', 'Caminito', 'Arandas', 'Proveedores', 'Cajero', 'Zona', 'Primer', 'Res.']
+    for i in lista:
+        if i == etiqueta:
+            return 1
+
+    return 0
+
+
+#revisa que tenga un numero
+def verificar_numero(numero):
+    lista= ["0","1","2","3","4","5","6","7","8","9"]
+    for i in lista:
+        if i == numero:
+            return 1
+
+    return 0
+
+
+
+def main():
+    obtener_nombres()
+
+if __name__== "__main__":
+  main()

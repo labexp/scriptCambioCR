@@ -4,7 +4,7 @@ from xml.etree.ElementTree import Element, SubElement
 
 
 def obtener_nombres():
-    tree = ET.ElementTree(file='alajuelacalles.osm')
+    tree = ET.ElementTree(file='Heredia2.osm')
 
     root = tree.getroot()
 
@@ -14,6 +14,8 @@ def obtener_nombres():
     for elem in tree.iterfind('way'):
         bandera_Altname=0
         bandera_name=0
+        nombre_completo=""
+        altname_completo=""
         for subelem in elem.iterfind('tag'):
 
 
@@ -21,7 +23,7 @@ def obtener_nombres():
                 nombre_completo = subelem.attrib['v']
                 etiqueta_nombre=subelem.attrib['v'].split(' ')
                 if verificar_etiqueta(etiqueta_nombre[0])== 1 :  #primera palabra
-                    if verificar_numero(etiqueta_nombre[1][0])==1: #primer letra de la segunda palabra
+                    if verificar_numero(etiqueta_nombre[1][0])==1 or etiqueta_nombre[1]=="Central": #primer letra de la segunda palabra
                             bandera_name=1
             if(subelem.attrib['k'] == "alt_name"):
                 altname_completo=subelem.attrib['v']
@@ -33,13 +35,17 @@ def obtener_nombres():
                     subelem.attrib['v']=altname_completo
                 if(subelem.attrib['k']== "alt_name"):
                     subelem.attrib['v']=nombre_completo
+        elif(bandera_Altname==1 and bandera_name!=1):
+            print(altname_completo)
+            print(nombre_completo)
+            print("_______________________________________")
     tree.write('file_new.xml')
 
 
 
 
 def verificar_etiqueta(etiqueta):
-    lista = ['Paseo','Río', 'Avenida', 'Hacienda', 'Puerto', 'Callejón', 'Calle', 'Calzada', 'Camino', 'Av.','Paso', 'Cañada', 'Minas', 'Cerrada',
+    lista = ['Diagonal','Paseo','Río', 'Avenida', 'Hacienda', 'Puerto', 'Callejón', 'Calle', 'Calzada', 'Camino', 'Av.','Paso', 'Cañada', 'Minas', 'Cerrada',
     'Puebla', 'Principal', 'Central','Primera', 'Segunda', 'Portón', 'Lateral', 'Calz.', 'Corrido', 'Casa', 'Villa', 'Mejía',
     'Vía', 'Via', 'Real', 'Isla', 'Avendida', 'Marisma', 'Rada', 'Raudal', 'Ribera', 'Embocadura', 'Cataratas', 'Médanos',
     'Mirador', 'Av', 'Jardín',  'A.', 'Circuito','Gral.', 'Rincón', 'Calz', 'Rinconada', 'Periférico', 'Cda', 'Jardin',

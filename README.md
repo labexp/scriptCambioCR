@@ -34,14 +34,14 @@ Instrucciones
 ### _Paso 1_
 
 Ingresar en JOSM, darle click en archivo->descargar datos, luego pulsar la pestaña "descargar de la API de overpass" y en el cuadro de texto copie el contenido del documento overpass.txt. Finalmente dar click en descargar. 
-Esto va a genera un archivo .osm el cuál deberá guardarlo en la carpeta en donde se situe el script.py
+Esto va a generar un archivo .osm el cuál deberá guardarlo en la carpeta en donde se encuentre script.py
 
 
 ### _Paso 2_
 
 Ejecución del código:
 
-Abra a la terminal en la carpeta mencionada en el punto anterior y ejecute lo siguiente:
+Abra la terminal en la carpeta mencionada en el punto anterior y ejecute lo siguiente:
         
 ```
 python3 script.py <nombre del archivo>

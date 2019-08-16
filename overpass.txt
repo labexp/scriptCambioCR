@@ -1,31 +1,3 @@
-<osm-script output="xml" timeout="25"><!-- fixed by auto repair -->
-<!-- gather results -->
-<union>
-<!-- query part for: “highway=* and highway!=footway and highway!=pedestrian and "-highway"!=path” -->
-<query type="node">
-<has-kv k="highway"/>
-<has-kv k="highway" modv="not" v="footway"/>
-<has-kv k="highway" modv="not" v="pedestrian"/>
-<has-kv k="-highway" modv="not" v="path"/>
-<bbox-query {{bbox}}/>
-</query>
-<query type="way">
-<has-kv k="highway"/>
-<has-kv k="highway" modv="not" v="footway"/>
-<has-kv k="highway" modv="not" v="pedestrian"/>
-<has-kv k="-highway" modv="not" v="path"/>
-<bbox-query {{bbox}}/>
-</query>
-<query type="relation">
-<has-kv k="highway"/>
-<has-kv k="highway" modv="not" v="footway"/>
-<has-kv k="highway" modv="not" v="pedestrian"/>
-<has-kv k="-highway" modv="not" v="path"/>
-<bbox-query {{bbox}}/>
-</query>
-</union>
-<!-- print results -->
-<print mode="meta"/><!-- fixed by auto repair -->
-<recurse type="down"/>
-<print mode="meta" order="quadtile"/><!-- fixed by auto repair -->
-</osm-script>
+area["ISO3166-1"="CR"][admin_level=2];
+(way["highway"~"motorway|trunk|primary|motorway_link|trunk_link|primary_link|unclassified|tertiary|secondary|track|path|residential|service|secondary_link|tertiary_link"](area);
+);

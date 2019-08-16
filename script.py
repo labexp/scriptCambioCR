@@ -1,15 +1,15 @@
+import sys
 import xml.etree.cElementTree as ET
 from xml.etree.ElementTree import Element, SubElement
 
-
-
-def obtener_nombres():
-    tree = ET.ElementTree(file='chepe.osm')
+def obtener_nombres(archivo):
+    tree = ET.ElementTree(file = archivo)
 
     root = tree.getroot()
 
+    contador = 0
 
-    # price - raise the main price and insert new tier
+    nombre_archivo = archivo.split('.')
 
     for elem in tree.iterfind('way'):
         bandera_Altname=0
@@ -18,38 +18,38 @@ def obtener_nombres():
         altname_completo=""
         for subelem in elem.iterfind('tag'):
 
-
             if(subelem.attrib['k'] == "name"):
-
                 nombre_completo = subelem.attrib['v']
                 etiqueta_nombre=subelem.attrib['v'].split(' ')
+
                 if verificar_etiqueta(etiqueta_nombre[0])== 1 :  #primera palabra
-                    print(etiqueta_nombre)
+
                     if(len(etiqueta_nombre)!=1):
+
                         if(etiqueta_nombre[1]==''):
                             segunda_palabra=2
                         else:
                             segunda_palabra=1
+
                         if verificar_numero(etiqueta_nombre[segunda_palabra][0])==1 or etiqueta_nombre[segunda_palabra] =="Central": #primer letra de la segunda palabra
                                 bandera_name=1
-
 
             if(subelem.attrib['k'] == "alt_name"):
                 altname_completo=subelem.attrib['v']
                 bandera_Altname=1
 
         if(bandera_Altname==1 and bandera_name==1):
+            contador+=1
             for subelem in elem.iterfind('tag'):
+
                 if(subelem.attrib['k'] == "name"):
                     subelem.attrib['v']=altname_completo
+
                 if(subelem.attrib['k']== "alt_name"):
                     subelem.attrib['v']=nombre_completo
 
-        elif(bandera_Altname==1 and bandera_name!=1):
-            print(altname_completo)
-            print(nombre_completo)
-            print("_______________________________________")
-    tree.write('file_new.osm')
+    tree.write(nombre_archivo[0] + '_new.osm')
+    print(contador)
 
 
 
@@ -79,10 +79,20 @@ def verificar_numero(numero):
 
     return 0
 
+def verificarargumentos():
+    nombre_archivo = sys.argv[1].split('.')
 
+    if len(sys.argv)!= 2:
+        print("Cantidad de argumentos invalida. Debe ejecutarse con un archivo como parametro")
+        exit(0)
+
+    if nombre_archivo[1] != "osm":
+        print("Formato de archivo invalido. Debe ser un .osm")
+        exit(0)
+
+    else:
+        obtener_nombres(sys.argv[1])
 
 def main():
-    obtener_nombres()
-
-if __name__== "__main__":
-  main()
+	verificarargumentos()
+main()

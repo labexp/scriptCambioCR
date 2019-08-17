@@ -1,3 +1,7 @@
 area["ISO3166-1"="CR"][admin_level=2];
 (way["highway"~"motorway|trunk|primary|motorway_link|trunk_link|primary_link|unclassified|tertiary|secondary|track|path|residential|service|secondary_link|tertiary_link"](area);
 );
+
+out meta;
+>;
+out skel qt;

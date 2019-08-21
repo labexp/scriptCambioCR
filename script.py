@@ -3,9 +3,9 @@ import xml.etree.cElementTree as ET
 from xml.etree.ElementTree import Element, SubElement
 
 def obtener_nombres(archivo):
+    lista=[]
     tree = ET.ElementTree(file = archivo)
 
-    root = tree.getroot()
 
     contador = 0
 
@@ -35,21 +35,28 @@ def obtener_nombres(archivo):
                                 bandera_name=1
 
             if(subelem.attrib['k'] == "alt_name"):
+
                 altname_completo=subelem.attrib['v']
+                etiqueta_altname=subelem.attrib['v'].split(' ')
                 bandera_Altname=1
 
         if(bandera_Altname==1 and bandera_name==1):
+            elem.set('action', 'modify')
+
             contador+=1
             for subelem in elem.iterfind('tag'):
 
                 if(subelem.attrib['k'] == "name"):
-                    subelem.attrib['v']=altname_completo
-
+                    if verificar_etiqueta(etiqueta_altname[0])== 1 :
+                        subelem.attrib['v']=altname_completo
+                    else:
+                        subelem.attrib['v']=etiqueta_nombre[0]+ " " +altname_completo
+                        #print(subelem.attrib['v'])
                 if(subelem.attrib['k']== "alt_name"):
                     subelem.attrib['v']=nombre_completo
 
+
     tree.write(nombre_archivo[0] + '_new.osm')
-    print(contador)
 
 
 
